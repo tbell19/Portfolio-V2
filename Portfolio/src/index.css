@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+@theme {
+  --color-crimson: #B3001B;
+  --color-charcoal: #262626;
+  --color-lavender: #AF9BB6;
+  --color-mint: #7CEA9C;
+  --color-gold: #EECF6D;
+}
+
+/* Page background */
+body {
+  background: 
+    linear-gradient(135deg, rgba(26, 26, 29, 0.9) 0%, rgba(45, 45, 55, 0.82) 50%, rgba(26, 26, 29, 0.9) 100%),
+    radial-gradient(circle at 20% 50%, rgba(255, 215, 0, 0.07) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(100, 100, 255, 0.07) 0%, transparent 50%);
+  background-color: #1a1a1d;
+  background-attachment: fixed;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.14) 1.2px, transparent 1.2px);
+  background-size: 28px 28px;
+  opacity: 0.75;
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+}
+
+/* Custom cursor */
+* {
+  cursor: none;
+}
+
+.custom-cursor {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(179, 0, 27, 0.6);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate3d(-50%, -50%, 0);
+  will-change: transform;
+  transition: width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
+  background: radial-gradient(circle, rgba(179, 0, 27, 0.1) 0%, rgba(179, 0, 27, 0.05) 50%, transparent 70%);
+  backdrop-filter: blur(2px);
+}
+
+.custom-cursor::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  background: rgba(179, 0, 27, 0.8);
+  border-radius: 50%;
+}
+
+.custom-cursor.clicking {
+  width: 32px;
+  height: 32px;
+  border-color: rgba(179, 0, 27, 0.9);
+}
+
+a, button, [role="button"] {
+  cursor: none;
+}
+
+.custom-cursor.hovering {
+  width: 60px;
+  height: 60px;
+  border-color: rgba(238, 207, 109, 0.8);
+  background: radial-gradient(circle, rgba(238, 207, 109, 0.15) 0%, rgba(238, 207, 109, 0.08) 50%, transparent 70%);
+}
+
+/* Restore default heading sizes */
+h1 {
+  font-size: 2em;
+  font-weight: bold;
+  margin: 0.67em 0;
+}
+
+h2 {
+  font-size: 1.5em;
+  font-weight: bold;
+  margin: 0.83em 0;
+}
+
+/* Hero section text sizing */
+.hero-section h1 {
+  font-size: 4.5rem;
+  line-height: 1.1;
+  margin: 0.3em 0;
+}
+
+.hero-section h2 {
+  font-size: 2rem;
+  line-height: 1.4;
+  margin: 0.5em 0;
+}
+
+.hero-section span {
+  font-size: inherit;
+}
+
+/* Responsive sizing for smaller screens */
+@media (max-width: 1024px) {
+  .hero-section h1 {
+    font-size: 3.5rem;
+  }
+  
+  .hero-section h2 {
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-section h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero-section h2 {
+    font-size: 1.5rem;
+  }
+}
