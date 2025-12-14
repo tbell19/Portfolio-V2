@@ -40,8 +40,14 @@ body::before {
 }
 
 /* Custom cursor */
-* {
-  cursor: none;
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none;
+  }
+
+  a, button, [role="button"] {
+    cursor: none;
+  }
 }
 
 .custom-cursor {
@@ -75,10 +81,6 @@ body::before {
   width: 32px;
   height: 32px;
   border-color: rgba(179, 0, 27, 0.9);
-}
-
-a, button, [role="button"] {
-  cursor: none;
 }
 
 .custom-cursor.hovering {

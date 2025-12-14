@@ -41,7 +41,6 @@ interface LogoScrollerProps {
 }
 
 export default function LogoScroller({ direction = 'left' }: LogoScrollerProps) {
-    console.log('Logo sources:', logos.map(l => ({ alt: l.alt, src: l.src })));
 
     return (
         <>

@@ -19,6 +19,7 @@ function App() {
   const bgImageRef = useRef<HTMLImageElement>(null);
   const foregroundImageRef = useRef<HTMLImageElement>(null);
   const cursorRef = useRef<HTMLDivElement>(null);
+  const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -30,57 +31,95 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      // Update cursor position directly via DOM for performance
-      if (cursorRef.current) {
-        cursorRef.current.style.left = `${e.clientX}px`;
-        cursorRef.current.style.top = `${e.clientY}px`;
-      }
+    if (isMobile) {
+      // Mobile: use scroll-based parallax
+      const handleScroll = () => {
+        if (!imageContainerRef.current) return;
 
-      if (!foregroundImageRef.current || !imageContainerRef.current) return;
+        const rect = imageContainerRef.current.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        // Calculate scroll progress relative to viewport (-1 to 1)
+        // When element is at bottom of screen: progress = 1
+        // When element is at top of screen: progress = -1
+        const elementCenter = rect.top + rect.height / 2;
+        const viewportCenter = windowHeight / 2;
+        const y = -(elementCenter - viewportCenter) / (windowHeight / 2);
+        
+        // Clamp values between -1 and 1
+        const clampedY = Math.max(-1, Math.min(1, y));
+        
+        // Subtle parallax for mobile (smaller values than desktop)
+        const bgTranslateY = clampedY * 15;
+        const fgTranslateY = clampedY * 30;
 
-      const rect = imageContainerRef.current.getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
+        setRotation({ 
+          background: { x: 0, y: 0, translateX: 0, translateY: bgTranslateY }, 
+          foreground: { x: 0, y: 0, translateX: 0, translateY: fgTranslateY } 
+        });
+      };
 
-      // Calculate mouse position relative to center (-1 to 1)
-      const x = (e.clientX - centerX) / (rect.width / 2);
-      const y = (e.clientY - centerY) / (rect.height / 2);
+      // Initial call
+      handleScroll();
 
-      // Convert to rotation angles and translation for subtle parallax
-      // Background moves less (subtle)
-      const bgRotateY = x * 1.5;
-      const bgRotateX = -y * 1.5;
-      const bgTranslateX = x * 5;
-      const bgTranslateY = y * 5;
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      return () => window.removeEventListener('scroll', handleScroll);
+    } else {
+      // Desktop: use mouse-based parallax
+      const handleMouseMove = (e: MouseEvent) => {
+        // Update cursor position directly via DOM for performance
+        if (cursorRef.current) {
+          cursorRef.current.style.left = `${e.clientX}px`;
+          cursorRef.current.style.top = `${e.clientY}px`;
+        }
+
+        if (!foregroundImageRef.current || !imageContainerRef.current) return;
+
+        const rect = imageContainerRef.current.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        // Calculate mouse position relative to center (-1 to 1)
+        const x = (e.clientX - centerX) / (rect.width / 2);
+        const y = (e.clientY - centerY) / (rect.height / 2);
+
+        // Convert to rotation angles and translation for subtle parallax
+        // Background moves less (subtle)
+        const bgRotateY = x * 1.5;
+        const bgRotateX = -y * 1.5;
+        const bgTranslateX = x * 5;
+        const bgTranslateY = y * 5;
+        
+        // Foreground moves more (pronounced)
+        const fgRotateY = x * 3;
+        const fgRotateX = -y * 3;
+        const fgTranslateX = x * 12;
+        const fgTranslateY = y * 12;
+
+        setRotation({ 
+          background: { x: bgRotateX, y: bgRotateY, translateX: bgTranslateX, translateY: bgTranslateY }, 
+          foreground: { x: fgRotateX, y: fgRotateY, translateX: fgTranslateX, translateY: fgTranslateY } 
+        });
+      };
+
+      const handleMouseDown = () => setIsClicking(true);
+      const handleMouseUp = () => setIsClicking(false);
+
+      window.addEventListener('mousemove', handleMouseMove);
+      window.addEventListener('mousedown', handleMouseDown);
+      window.addEventListener('mouseup', handleMouseUp);
       
-      // Foreground moves more (pronounced)
-      const fgRotateY = x * 3;
-      const fgRotateX = -y * 3;
-      const fgTranslateX = x * 12;
-      const fgTranslateY = y * 12;
-
-      setRotation({ 
-        background: { x: bgRotateX, y: bgRotateY, translateX: bgTranslateX, translateY: bgTranslateY }, 
-        foreground: { x: fgRotateX, y: fgRotateY, translateX: fgTranslateX, translateY: fgTranslateY } 
-      });
-    };
-
-    const handleMouseDown = () => setIsClicking(true);
-    const handleMouseUp = () => setIsClicking(false);
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
-    
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, []);
+      return () => {
+        window.removeEventListener('mousemove', handleMouseMove);
+        window.removeEventListener('mousedown', handleMouseDown);
+        window.removeEventListener('mouseup', handleMouseUp);
+      };
+    }
+  }, [isMobile]);
 
   useEffect(() => {
+    if (isMobile) return;
+
     const handleMouseOver = (e: Event) => {
       const target = e.target as HTMLElement;
       const isInteractive = target.closest('a, button, [role="button"]');
@@ -89,14 +128,16 @@ function App() {
 
     document.addEventListener('mouseover', handleMouseOver, { passive: true });
     return () => document.removeEventListener('mouseover', handleMouseOver);
-  }, []);
+  }, [isMobile]);
 
   return (
     <>
-      <div 
-        ref={cursorRef}
-        className={`custom-cursor ${isClicking ? 'clicking' : ''} ${isHovering ? 'hovering' : ''}`}
-      />
+      {!isMobile && (
+        <div 
+          ref={cursorRef}
+          className={`custom-cursor ${isClicking ? 'clicking' : ''} ${isHovering ? 'hovering' : ''}`}
+        />
+      )}
       <Navigation />
       <div className="hero-section w-full h-screen flex flex-col lg:flex-row text-white px-4 lg:px-8">
         <div className="w-full lg:w-1/2">
