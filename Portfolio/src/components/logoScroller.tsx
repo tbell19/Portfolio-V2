@@ -8,8 +8,6 @@ import GitLogo from '../assets/techLogos/svg/Git.svg';
 import DockerLogo from '../assets/techLogos/svg/Docker.svg';
 import AWSLogo from '../assets/techLogos/svg/AWS.svg';
 import PostgresLogo from '../assets/techLogos/svg/PostgresSQL.svg';
-import VueLogo from '../assets/techLogos/svg/Vue.js.svg';
-import AngularLogo from '../assets/techLogos/svg/Angular.svg';
 import LinuxLogo from '../assets/techLogos/svg/Linux.svg';
 import BootstrapLogo from '../assets/techLogos/svg/Bootstrap.svg';
 import FigmaLogo from '../assets/techLogos/svg/Figma.svg';
@@ -28,8 +26,6 @@ const logos = [
     { src: DockerLogo, alt: 'Docker' },
     { src: AWSLogo, alt: 'AWS' },
     { src: PostgresLogo, alt: 'PostgreSQL' },
-    { src: VueLogo, alt: 'Vue.js' },
-    { src: AngularLogo, alt: 'Angular' },
     { src: BootstrapLogo, alt: 'Bootstrap' },
     { src: FigmaLogo, alt: 'Figma' },
     { src: GitHubLogo, alt: 'GitHub' },
