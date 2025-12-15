@@ -142,7 +142,7 @@ function App() {
       <div className="hero-section w-full h-screen flex flex-col lg:flex-row text-white px-4 lg:px-8">
         <div className="w-full lg:w-1/2">
           <div className="h-100 flex flex-col justify-center lg:h-full lg:justify-center">
-            <h1>Hey 👋</h1>
+            <h1>Hey, 👋</h1>
             <h1>I'm <span>Trent</span> Bell</h1>
             <h2>A <span>Full-Stack Software Engineer</span> with a passion for creating <span key={fadeKey} className="changing-text fade-enter text-gold underline">{adjectives[currentIndex]}</span><br />
             user experiences.</h2>
@@ -209,7 +209,7 @@ function App() {
                       <ul className="space-y-3">
                         <li className="flex items-start">
                         <span className="inline-block w-2 h-2 bg-gold rounded-full mt-2 mr-3 flex-shrink-0"></span>
-                        <span className="text-body"><strong className="text-heading">Specialization including six courses covering cross-platform mobile development</strong>, javascript, version control, React, React Native, working with data, principles of UI/UX design, and a capstone React Native app.</span>
+                        <span className="text-body"><strong className="text-heading">Specialization including six courses covering cross-platform mobile development</strong>, JavaScript, version control, React, React Native, working with data, principles of UI/UX design, and a capstone React Native app.</span>
                         </li>
                         <li className="flex items-start">
                         <span className="inline-block w-2 h-2 bg-gold rounded-full mt-2 mr-3 flex-shrink-0"></span>
@@ -254,7 +254,7 @@ function App() {
                 <li className="mb-10 ms-4">
                     <div className="absolute w-3 h-3 bg-neutral-quaternary rounded-full mt-1.5 -start-1.5 border border-buffer"></div>
                     <time className="text-sm font-normal leading-none text-body">August 2019 - May 2023</time>
-                    <h3 className="text-lg font-semibold text-heading my-2">Bachelors of Science, Computer Science, Minor in Mathematics - Texas Tech University</h3>
+                    <h3 className="text-lg font-semibold text-heading my-2">Bachelor of Science, Computer Science, Minor in Mathematics - Texas Tech University</h3>
                 </li>
 
                 <li className="ms-4">

@@ -129,7 +129,7 @@ export default function LogoScroller({ direction = 'left' }: LogoScrollerProps) 
                         {logos.map((logo, index) => (
                             <img 
                                 className='logoImage'
-                                key={`first-${index}`}
+                                key={`second-${index}`}
                                 src={logo.src} 
                                 alt={logo.alt}
                                 onError={(e) => console.error(`Failed to load ${logo.alt}:`, logo.src, e)}
