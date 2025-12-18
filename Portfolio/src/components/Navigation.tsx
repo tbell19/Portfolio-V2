@@ -19,7 +19,7 @@ export default function Navigation() {
     <nav className="fixed top-8 right-8 z-50">
       <div className="glass-card flex items-center gap-3 py-3 px-4">
         <a 
-          href="#home" 
+          href="/#home" 
           className="nav-button text-white hover:text-gold transition-colors duration-200"
           aria-label="Home"
         >
