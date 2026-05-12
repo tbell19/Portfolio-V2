@@ -28,24 +28,18 @@ export default function Home() {
 
   useEffect(() => {
     if (isMobile) {
-      // Mobile: use scroll-based parallax
       const handleScroll = () => {
         if (!imageContainerRef.current) return;
 
         const rect = imageContainerRef.current.getBoundingClientRect();
         const windowHeight = window.innerHeight;
         
-        // Calculate scroll progress relative to viewport (-1 to 1)
-        // When element is at bottom of screen: progress = 1
-        // When element is at top of screen: progress = -1
         const elementCenter = rect.top + rect.height / 2;
         const viewportCenter = windowHeight / 2;
         const y = -(elementCenter - viewportCenter) / (windowHeight / 2);
         
-        // Clamp values between -1 and 1
         const clampedY = Math.max(-1, Math.min(1, y));
         
-        // Subtle parallax for mobile (smaller values than desktop)
         const bgTranslateY = clampedY * 15;
         const fgTranslateY = clampedY * 30;
 
@@ -55,13 +49,11 @@ export default function Home() {
         });
       };
 
-      // Initial call
       handleScroll();
 
       window.addEventListener('scroll', handleScroll, { passive: true });
       return () => window.removeEventListener('scroll', handleScroll);
     } else {
-      // Desktop: use mouse-based parallax
       const handleMouseMove = (e: MouseEvent) => {
         if (!foregroundImageRef.current || !imageContainerRef.current) return;
 
@@ -69,18 +61,14 @@ export default function Home() {
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
 
-        // Calculate mouse position relative to center (-1 to 1)
         const x = (e.clientX - centerX) / (rect.width / 2);
         const y = (e.clientY - centerY) / (rect.height / 2);
 
-        // Convert to rotation angles and translation for subtle parallax
-        // Background moves less (subtle)
         const bgRotateY = x * 1.5;
         const bgRotateX = -y * 1.5;
         const bgTranslateX = x * 5;
         const bgTranslateY = y * 5;
         
-        // Foreground moves more (pronounced)
         const fgRotateY = x * 3;
         const fgRotateX = -y * 3;
         const fgTranslateX = x * 12;
@@ -103,7 +91,7 @@ export default function Home() {
   return (
     <>
       <Navigation />
-      <div className="hero-section w-full h-screen flex flex-col lg:flex-row text-white px-4 lg:px-8">
+      <div id="home" className="hero-section w-full h-screen flex flex-col lg:flex-row text-white px-4 lg:px-8">
         <div className="w-full lg:w-1/2">
           <div className="h-100 flex flex-col justify-center lg:h-full lg:justify-center">
             <h1>Hey, 👋</h1>
@@ -246,6 +234,74 @@ export default function Home() {
                 </li>
             </ol>
             </div>
+        </div>
+      </div>
+      <div id="projects" className='w-full text-white px-4 lg:px-8 py-12 flex justify-center'>
+        <div className='glass-card max-w-5xl w-full'>
+          <h1 className='mb-8'>Projects</h1>
+          <div className='border border-white/10 rounded-2xl overflow-hidden'>
+            <div className='flex flex-col lg:flex-row'>
+              <div
+                className='lg:w-56 flex-shrink-0 flex items-center justify-center p-10'
+                style={{ background: 'linear-gradient(135deg, #7B2D8B 0%, #B83A2A 100%)' }}
+              >
+                <div className='text-center'>
+                  <div className='text-6xl mb-3'>🌮</div>
+                  <div className='text-white font-black text-xl leading-tight'>Taco<br />Rummy</div>
+                </div>
+              </div>
+              <div className='flex-1 p-6 flex flex-col'>
+                <div className='flex flex-wrap items-center gap-3 mb-3'>
+                  <h2 className='text-gold m-0'>Taco Rummy</h2>
+                  <span className='px-2 py-0.5 text-xs bg-gold/20 text-gold rounded-full border border-gold/30 font-medium'>
+                    Card Game
+                  </span>
+                </div>
+                <p className='text-body mb-4'>
+                  A cross-platform digital adaptation of the classic Taco Rummy card game.
+                  Challenge the AI in single-player or compete with friends in real-time
+                  online multiplayer — available on iOS, Android, and Web.
+                </p>
+                <ul className='space-y-2 mb-5'>
+                  {[
+                    'Online multiplayer with public & private rooms (no account required)',
+                    'Single-player vs AI',
+                    '7-round contract system following classic Taco Rummy rules',
+                    'Cross-platform: iOS, Android, and Web via React Native & Expo',
+                  ].map((feature) => (
+                    <li key={feature} className='flex items-start gap-2 text-body text-sm'>
+                      <span className='inline-block w-1.5 h-1.5 bg-gold rounded-full mt-1.5 flex-shrink-0' />
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <div className='flex flex-wrap gap-2 mb-6'>
+                  {['React Native', 'Expo', 'TypeScript', 'Node.js', 'Socket.io', 'PostgreSQL', 'Docker'].map((tag) => (
+                    <span
+                      key={tag}
+                      className='px-3 py-1 text-xs bg-white/5 border border-white/10 rounded-full text-body'
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                <div className='flex flex-wrap gap-3 mt-auto'>
+                  <a
+                    href='https://tbell19.itch.io/tacorummy'
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    className='inline-flex items-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-white text-sm transition-opacity hover:opacity-85'
+                    style={{ backgroundColor: '#FA5C5C' }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 512 512" fill="white" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <path d="M71.092 7.888C49.477 21.02 0 82.532 0 94.794v19.5C0 138.6 21.816 161 48.617 161c30.78 0 55.72-25.4 55.72-56.694a56.3 56.3 0 0 0 55.764 56.694 56.3 56.3 0 0 0 55.764-56.694 56.3 56.3 0 0 0 55.764 56.694 56.3 56.3 0 0 0 55.764-56.694 56.3 56.3 0 0 0 55.764 56.694c26.8 0 48.617-22.4 48.617-49.706v-19.5c0-12.262-49.477-73.774-71.092-86.906C394.714 1.41 327.7 0 256 0S117.286 1.41 71.092 7.888zM206 212v136h-35l-8 32H0v40h512v-40H349l-8-32h-35V212z"/>
+                    </svg>
+                    Support on itch.io
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div className='contact-section w-full text-white px-4 lg:px-8 py-12 flex justify-center'>
