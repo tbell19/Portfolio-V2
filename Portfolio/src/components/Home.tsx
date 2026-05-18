@@ -14,6 +14,7 @@ export default function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [fadeKey, setFadeKey] = useState(0);
   const [showScreenshots, setShowScreenshots] = useState(false);
+  const [showReadMore, setShowReadMore] = useState(false);
   const [rotation, setRotation] = useState({ 
     background: { x: 0, y: 0, translateX: 0, translateY: 0 }, 
     foreground: { x: 0, y: 0, translateX: 0, translateY: 0 }
@@ -274,20 +275,60 @@ export default function Home() {
                   </span>
                 </div>
                 <div className='flex flex-wrap gap-2 mb-4'>
-                  {['React Native', 'Expo', 'TypeScript', 'Node.js', 'Socket.io', 'PostgreSQL'].map((tech) => (
+                  {['React Native', 'Expo', 'TypeScript', 'Node.js', 'Socket.io', 'PostgreSQL', 'Docker', 'GitHub Actions', 'Proxmox'].map((tech) => (
                     <span key={tech} className='tech-pill'>{tech}</span>
                   ))}
                 </div>
                 <p className='text-body mb-4 leading-relaxed'>
                   A cross-platform card game built with React Native and Expo. Play <strong className='text-heading'>online multiplayer</strong> with
-                  friends or take on <strong className='text-heading'>AI opponents</strong> in single-player mode &mdash; powered by a Node.js
+                  friends or take on <strong className='text-heading'>AI opponents</strong> in single-player mode, powered by a Node.js
                   game server with Socket.io and a shared TypeScript engine driving gameplay across web and mobile.
                 </p>
-                <p className='text-body mb-5 leading-relaxed'>
+                <p className='text-body mb-4 leading-relaxed'>
                   Also playable directly inside Discord as an <strong className='text-heading'>Embedded Activity</strong>, so friends can
-                  jump in from a voice channel without leaving the app &mdash; built against Discord&apos;s Embedded App SDK with
+                  jump in from a voice channel without leaving the app. Built against Discord&apos;s Embedded App SDK with
                   OAuth-based authentication and channel-scoped lobbies.
                 </p>
+                {showReadMore && (
+                  <div className='fade-enter'>
+                    <p className='text-body mb-4 leading-relaxed'>
+                      Includes a <strong className='text-heading'>full moderation system</strong> for player reports, review,
+                      and enforcement, built with privacy in mind so the database stores no raw PII.
+                    </p>
+                    <p className='text-body mb-4 leading-relaxed'>
+                      Players can also <strong className='text-heading'>file bug reports from inside the game</strong>, which the
+                      server enriches with a redacted client log and recent game state and posts straight to the project&apos;s
+                      GitHub Issues, with global rate caps so a misbehaving client can&apos;t flood the tracker. Server-side
+                      errors take the same path automatically, turning crashes into actionable, deduplicated issues.
+                    </p>
+                    <p className='text-body mb-4 leading-relaxed'>
+                      Backed by a <strong className='text-heading'>full CI/CD pipeline</strong> on GitHub Actions: every push runs
+                      typecheck, unit tests on the shared engine and server, and Playwright end-to-end tests against the web
+                      build, alongside cached Docker image builds for the server and web app. Merges to <code>main</code>{' '}
+                      automatically deploy via a <strong className='text-heading'>self-hosted runner</strong> on my home Proxmox
+                      cluster, which rebuilds and rolls the Docker Compose stack in place. Mobile releases are
+                      cut through Expo Application Services (EAS) for iOS and Android.
+                    </p>
+                  </div>
+                )}
+                <button
+                  type='button'
+                  onClick={() => setShowReadMore((v) => !v)}
+                  aria-expanded={showReadMore}
+                  className='inline-flex items-center gap-1.5 text-sm font-medium text-gold hover:opacity-80 transition-opacity mb-5 self-start'
+                >
+                  {showReadMore ? 'Show less' : 'Read more'}
+                  <svg
+                    viewBox='0 0 24 24'
+                    className={`w-4 h-4 transition-transform duration-200 ${showReadMore ? 'rotate-180' : ''}`}
+                    fill='none'
+                    stroke='currentColor'
+                    strokeWidth={2}
+                    aria-hidden='true'
+                  >
+                    <path strokeLinecap='round' strokeLinejoin='round' d='M19 9l-7 7-7-7' />
+                  </svg>
+                </button>
                 <div className='flex flex-wrap gap-3 mt-auto'>
                   <a
                     href='https://tacorummy.com'
